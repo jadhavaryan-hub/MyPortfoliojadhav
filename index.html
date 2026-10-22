@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aryan Jadhav | Geoinformatics Portfolio</title>
+<meta name="description" content="Portfolio of Aryan Jadhav — GIS, remote sensing and spatial data projects.">
+
+<style>
+/* ============ DESIGN VARIABLES ============ */
+:root {
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface-2: #eef2f8;
+  --text: #172033;
+  --muted: #5a6478;
+  --primary: #1f6f5f;
+  --primary-dark: #164f43;
+  --accent: #e5a93d;
+  --border: #dfe6ef;
+  --radius: 16px;
+  --shadow: 0 18px 40px -24px rgba(23, 32, 51, 0.35);
+}
+
+body.dark {
+  --bg: #0f1722;
+  --surface: #16202d;
+  --surface-2: #1c2836;
+  --text: #edf3f8;
+  --muted: #93a1b5;
+  --primary: #67c8af;
+  --primary-dark: #4ea88f;
+  --accent: #f0bd5e;
+  --border: #27384a;
+  --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.6);
+}
+
+/* ============ GLOBAL STYLES ============ */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+img { max-width: 100%; display: block; }
+
+.container {
+  width: min(100%, 1180px);
+  margin-inline: auto;
+  padding-inline: 22px;
+}
+
+section { padding: 82px 0; }
+
+h1, h2, h3 { line-height: 1.15; margin: 0 0 14px; }
+h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); }
+h3 { font-size: 1.15rem; }
+p { color: var(--muted); margin: 0 0 14px; }
+
+.eyebrow {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+.section-head { max-width: 640px; margin-bottom: 44px; }
+
+/* ============ BUTTONS / TAGS ============ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.btn:hover { transform: translateY(-2px); }
+
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { box-shadow: 0 12px 24px -10px var(--primary); }
+
+.btn-secondary { background: transparent; color: var(--text); border-color: var(--border); }
+.btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+.tag {
+  display: inline-block;
+  background: var(--surface-2);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin: 4px 6px 0 0;
+}
+
+/* ============ NAVIGATION ============ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding-block: 16px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 1.05rem;
+}
+.brand span {
+  background: var(--primary);
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 0.85rem;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 26px;
+  margin: 0;
+  padding: 0;
+}
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.nav-links a:hover { color: var(--primary); }
+
+.nav-tools { display: flex; align-items: center; gap: 10px; }
+
+.icon-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.05rem;
+  display: grid;
+  place-items: center;
+}
+
+.menu-toggle { display: none; }
+
+/* ============ HERO ============ */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-top: 90px;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  right: -100px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--primary) 25%, transparent), transparent 70%);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: -140px;
+  left: -80px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 25%, transparent), transparent 70%);
+}
+
+.hero-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.hero-kicker {
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.hero h1 {
+  font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.hero h1 span { color: var(--primary); }
+
+.hero p.lede { font-size: 1.1rem; max-width: 52ch; }
+
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 26px; }
+
+.hero-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+.hero-card .map-glyph {
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+}
+.hero-card dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.hero-card dt { font-size: 0.8rem; color: var(--muted); }
+.hero-card dd { margin: 2px 0 0; font-weight: 800; font-size: 1.3rem; }
+
+/* ============ ABOUT ============ */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.quick-facts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.fact-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.fact-card strong { display: block; font-size: 1.6rem; color: var(--primary); }
+.fact-card span { color: var(--muted); font-size: 0.88rem; }
+
+/* ============ SKILLS ============ */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.skill-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 26px;
+}
+.skill-icon { font-size: 1.8rem; margin-bottom: 10px; }
+
+/* ============ PROJECTS ============ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.project-thumb {
+  background: var(--surface-2);
+  font-size: 2.2rem;
+  display: grid;
+  place-items: center;
+  height: 130px;
+}
+.card-content { padding: 22px; flex: 1; display: flex; flex-direction: column; }
+.card-links { display: flex; gap: 16px; margin-top: auto; padding-top: 10px; }
+.card-link { color: var(--primary); font-weight: 700; text-decoration: none; font-size: 0.9rem; }
+.card-link:hover { text-decoration: underline; }
+
+/* ============ DASHBOARD FEATURE ============ */
+.dashboard-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px;
+}
+.dashboard-preview {
+  background: var(--surface-2);
+  border-radius: 12px;
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+}
+
+/* ============ TIMELINE ============ */
+.timeline { border-left: 2px solid var(--border); padding-left: 26px; display: grid; gap: 30px; }
+.timeline-item h3 { margin-bottom: 4px; }
+.timeline-date { color: var(--primary); font-weight: 700; font-size: 0.85rem; }
+
+/* ============ CERTIFICATIONS ============ */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.cert-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+
+/* ============ ACADEMIC ============ */
+.academic-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.academic-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+/* ============ CONTACT ============ */
+.contact-box {
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 48px;
+  display: grid;
+  gap: 22px;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+}
+.contact-box h2, .contact-box p { color: #fff; }
+.contact-links { display: flex; flex-wrap: wrap; gap: 14px; }
+.contact-links a {
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+.contact-links a:hover { background: rgba(255,255,255,0.26); }
+
+/* ============ FOOTER ============ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* ============ RESPONSIVE MEDIA QUERIES ============ */
+@media (max-width: 940px) {
+  .hero-grid,
+  .about-grid,
+  .dashboard-feature,
+  .contact-box { grid-template-columns: 1fr; }
+
+  .skills-grid,
+  .projects-grid,
+  .cert-grid,
+  .academic-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 760px) {
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    padding: 20px 22px;
+    gap: 16px;
+  }
+  .nav-links.open { display: flex; }
+  .menu-toggle { display: grid; }
+
+  .skills-grid,
+  .projects-grid,
+  .cert-grid,
+  .academic-grid,
+  .quick-facts { grid-template-columns: 1fr; }
+
+  section { padding: 56px 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="#home"><span>AJ</span> Aryan Jadhav</a>
+
+    <nav aria-label="Main navigation">
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#dashboards">Dashboards</a></li>
+        <li><a href="#academic">Academic</a></li>
+        <li><a href="#journey">Journey</a></li>
+        <li><a href="#certifications">Certificates</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-tools">
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="home">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-kicker">Student • Geospatial Learner</div>
+        <h1>Hi, I'm <span>Aryan Jadhav.</span></h1>
+        <!-- EDIT: Replace this with your own introduction -->
+        <p class="lede">I am a postgraduate student exploring GIS, remote sensing and spatial data analysis — turning satellite and field data into maps and insights that are easy to act on.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#projects">Explore my work</a>
+          <a class="btn btn-secondary" href="https://github.com/jadhavaryan-hub" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="map-glyph">🗺️</div>
+        <h3>Currently focused on</h3>
+        <!-- EDIT: Replace with your real quick facts -->
+        <dl>
+          <div><dt>Projects</dt><dd>06+</dd></div>
+          <div><dt>Tools</dt><dd>08+</dd></div>
+          <div><dt>Datasets</dt><dd>10+</dd></div>
+          <div><dt>Certifications</dt><dd>03+</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about">
+    <div class="container about-grid">
+      <div class="about-copy">
+        <div class="eyebrow">About</div>
+        <h2>A little about my work</h2>
+        <!-- EDIT: Replace with your own about text -->
+        <p>I like geography, data and coding. I enjoy working with satellite images, making web maps, and finding patterns in spatial data to answer real questions about land, water and cities.</p>
+        <p>Outside my studies, I like turning small ideas into working projects, like dashboards, scripts and maps that anyone can open and use.</p>
+      </div>
+
+      <div class="quick-facts">
+        <!-- EDIT: Replace these stat cards with your own -->
+        <div class="fact-card"><strong>06+</strong><span>Geospatial projects</span></div>
+        <div class="fact-card"><strong>08+</strong><span>Tools & software</span></div>
+        <div class="fact-card"><strong>03+</strong><span>Certifications</span></div>
+        <div class="fact-card"><strong>02</strong><span>Years learning GIS</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section id="skills" style="background:var(--surface-2)">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Skills</div>
+        <h2>What I work with</h2>
+      </div>
+
+      <div class="skills-grid">
+        <!-- EDIT: Replace/duplicate skill-card blocks as needed -->
+        <article class="skill-card">
+          <div class="skill-icon">🗺️</div>
+          <h3>GIS &amp; Cartography</h3>
+          <p>Spatial analysis, map design and geoprocessing workflows.</p>
+          <span class="tag">ArcGIS Pro</span>
+          <span class="tag">QGIS</span>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-icon">🛰️</div>
+          <h3>Remote Sensing</h3>
+          <p>Satellite image analysis, classification and change detection.</p>
+          <span class="tag">Google Earth Engine</span>
+          <span class="tag">ERDAS</span>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-icon">💻</div>
+          <h3>Programming</h3>
+          <p>Scripting for automation, data analysis and web maps.</p>
+          <span class="tag">Python</span>
+          <span class="tag">JavaScript</span>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-icon">📊</div>
+          <h3>Data Analysis</h3>
+          <p>Cleaning, analysing and visualising spatial and tabular data.</p>
+          <span class="tag">Pandas</span>
+          <span class="tag">Excel</span>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-icon">🌐</div>
+          <h3>Web Mapping</h3>
+          <p>Building interactive maps and dashboards for the web.</p>
+          <span class="tag">Leaflet</span>
+          <span class="tag">Mapbox</span>
+        </article>
+
+        <article class="skill-card">
+          <div class="skill-icon">🧭</div>
+          <h3>Field Data Collection</h3>
+          <p>GPS survey, ground-truthing and mobile data capture.</p>
+          <span class="tag">ODK</span>
+          <span class="tag">GPS</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section id="projects">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Projects</div>
+        <h2>Selected work</h2>
+      </div>
+
+      <div class="projects-grid">
+        <!-- EDIT: Replace each project card with a real project + real links -->
+        <article class="project-card">
+          <div class="project-thumb">🌱</div>
+          <div class="card-content">
+            <span class="tag">Remote Sensing</span>
+            <h3>Vegetation Change Explorer</h3>
+            <p>Describe the study, data, method and result.</p>
+            <div class="card-links">
+              <a class="card-link" href="#" target="_blank" rel="noopener">Live project</a>
+              <a class="card-link" href="https://github.com/jadhavaryan-hub" target="_blank" rel="noopener">GitHub code</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-thumb">🏙️</div>
+          <div class="card-content">
+            <span class="tag">Urban GIS</span>
+            <h3>Urban Land Use Mapper</h3>
+            <p>Describe the study, data, method and result.</p>
+            <div class="card-links">
+              <a class="card-link" href="#" target="_blank" rel="noopener">Live project</a>
+              <a class="card-link" href="https://github.com/jadhavaryan-hub" target="_blank" rel="noopener">GitHub code</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-thumb">💧</div>
+          <div class="card-content">
+            <span class="tag">Hydrology</span>
+            <h3>Watershed Analysis Tool</h3>
+            <p>Describe the study, data, method and result.</p>
+            <div class="card-links">
+              <a class="card-link" href="#" target="_blank" rel="noopener">Live project</a>
+              <a class="card-link" href="https://github.com/jadhavaryan-hub" target="_blank" rel="noopener">GitHub code</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DASHBOARDS ============ -->
+  <section id="dashboards" style="background:var(--surface-2)">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Dashboards</div>
+        <h2>Interactive work</h2>
+      </div>
+
+      <div class="dashboard-feature">
+        <div class="dashboard-preview">
+          <!-- EDIT: Replace with an <iframe> to a public dashboard, or an image preview -->
+          <strong>Embed or preview your dashboard here</strong>
+        </div>
+        <div class="dashboard-copy">
+          <h2>Project / Dashboard Title</h2>
+          <p>Describe the dashboard: what data it uses, what question it helps answer, and who it is for.</p>
+          <a class="btn btn-primary" href="#" target="_blank" rel="noopener">Open dashboard</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ACADEMIC WORK ============ -->
+  <section id="academic">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Academic Work</div>
+        <h2>Coursework &amp; reports</h2>
+      </div>
+
+      <div class="academic-grid">
+        <!-- EDIT: Replace with real coursework/reports -->
+        <div class="academic-card">
+          <h3>Spatial Statistics Coursework</h3>
+          <p>Short summary of the coursework, method used and key takeaway.</p>
+          <a class="card-link" href="#" target="_blank" rel="noopener">View report</a>
+        </div>
+        <div class="academic-card">
+          <h3>Remote Sensing Term Paper</h3>
+          <p>Short summary of the coursework, method used and key takeaway.</p>
+          <a class="card-link" href="#" target="_blank" rel="noopener">View report</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EDUCATION / EXPERIENCE TIMELINE ============ -->
+  <section id="journey" style="background:var(--surface-2)">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Journey</div>
+        <h2>Education &amp; experience</h2>
+      </div>
+
+      <div class="timeline">
+        <!-- EDIT: Replace with your real timeline -->
+        <div class="timeline-item">
+          <div class="timeline-date">Present</div>
+          <h3>M.Sc. Geoinformatics</h3>
+          <p>University name — short description of focus area.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Started 2023</div>
+          <h3>B.Sc. Geoinformatics</h3>
+          <p>University name — short description of focus area.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2023</div>
+          <h3>GIS Intern / Assistant (if applicable)</h3>
+          <p>Organisation name — one line on what you did.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CERTIFICATIONS ============ -->
+  <section id="certifications">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Certifications</div>
+        <h2>Training &amp; achievements</h2>
+      </div>
+
+      <div class="cert-grid">
+        <!-- EDIT: Replace with your real certificates -->
+        <div class="cert-card">
+          <h3>Google Earth Engine Fundamentals</h3>
+          <p>Issuing organisation — year.</p>
+          <a class="card-link" href="#" target="_blank" rel="noopener">View certificate</a>
+        </div>
+        <div class="cert-card">
+          <h3>QGIS for Spatial Analysis</h3>
+          <p>Issuing organisation — year.</p>
+          <a class="card-link" href="#" target="_blank" rel="noopener">View certificate</a>
+        </div>
+        <div class="cert-card">
+          <h3>Python for Data Analysis</h3>
+          <p>Issuing organisation — year.</p>
+          <a class="card-link" href="#" target="_blank" rel="noopener">View certificate</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-box">
+        <div>
+          <h2>Let's connect</h2>
+          <p>Open to internships, collaborations and interesting GIS/remote-sensing problems.</p>
+        </div>
+        <div class="contact-links">
+          <!-- EDIT: Replace with your real email and links -->
+          <a href="mailto:youremail@example.com">✉ Email me</a>
+          <a href="https://github.com/jadhavaryan-hub" target="_blank" rel="noopener">GitHub</a>
+          <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="assets/documents/resume.pdf" target="_blank" rel="noopener">Résumé</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    &copy; <span id="year"></span> Aryan Jadhav. Built with HTML &amp; CSS, hosted on GitHub Pages.
+  </div>
+</footer>
+
+<script>
+  // Automatic year
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Mobile menu
+  const menuToggle = document.getElementById("menuToggle");
+  const navLinks = document.getElementById("navLinks");
+  menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("open");
+  });
+
+  // Dark mode with memory
+  const themeToggle = document.getElementById("themeToggle");
+  const savedTheme = localStorage.getItem("portfolio-theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+    themeToggle.textContent = "☀️";
+  }
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    const darkMode = document.body.classList.contains("dark");
+    themeToggle.textContent = darkMode ? "☀️" : "🌙";
+    localStorage.setItem("portfolio-theme", darkMode ? "dark" : "light");
+  });
+</script>
+
+</body>
+</html>
